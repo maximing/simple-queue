@@ -1,3 +1,5 @@
 daemon_loop.php
 daemon_on_demand.php
 index.php
+.idea
+.gitignore
