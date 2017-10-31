@@ -8,18 +8,16 @@ require_once('Queue.php');
 
 use MessageQueue\Queue;
 
+$store = \Storage\MySQLStore::getInstance();
+
 // Пример добавления в очередь
-$queue = new Queue(
-    \Storage\MySQLStore::getInstance()
-);
+$queue = new Queue($store);
 for($i = 0; $i <= 100000; $i++) {
     $queue->add('my_key', uniqid());
 }
 
 // пример обработки всей очереди
-$queue = new Queue(
-    \Storage\MySQLStore::getInstance()
-);
+$queue = new Queue($store);
 $queue->setLimit(1000);
 $key = 'my_key';
 $count = $queue->count($key);
