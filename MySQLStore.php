@@ -1,7 +1,9 @@
 <?php
 namespace Storage;
 
-class MySQLStore
+use MessageQueue\IMessageStore;
+
+class MySQLStore implements IMessageStore
 {
     private static $__instance;
     private $__db;
@@ -31,7 +33,7 @@ class MySQLStore
      * @param $key
      * @param $message
      */
-    public function addMessage($key, $message)
+    public function add($key, $message)
     {
         $query = "INSERT INTO Messages(name, text) VALUES('" . $key . "', '" . $message . "')";
         $this->__db->query($query);
@@ -50,12 +52,12 @@ class MySQLStore
     }
 
     /**
-     * Возвращает первые сообщения
+     * Возвращает сообщения
      * @param $key
      * @param $limit
      * @return array
      */
-    public function getMessages($key, $limit)
+    public function getMessages($key, int $limit)
     {
         $messages = [];
         $query = "SELECT id, text AS message FROM Messages WHERE name = '" . $key . "' ORDER BY id ASC LIMIT 0, {$limit}";
@@ -73,7 +75,7 @@ class MySQLStore
      * Удаляет сообщение
      * @param $id
      */
-    public function deleteMessage($id)
+    public function remove(int $id)
     {
         $query = "DELETE FROM Messages WHERE id = {$id}";
         $this->__db->query($query);

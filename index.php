@@ -1,7 +1,4 @@
-# simple-queue
-# Реализация простой очереди(первый вошел, первый вышел)
-
-```php
+<?php
 require_once('IMessageStore.php');
 require_once('MySQLStore.php');
 require_once('Queue.php');
@@ -40,4 +37,3 @@ while($count > 0) {
     }
     $count = $queue->count($key);
 }
-```

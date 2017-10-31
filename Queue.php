@@ -1,18 +1,15 @@
 <?php
 namespace MessageQueue;
 
-require_once('MySQLStore.php');
-use Storage\MySQLStore;
-
 class Queue
 {
     const DEFAULT_LIMIT = 100;
     private  $__limit;
     private $__store;
 
-    public function __construct()
+    public function __construct(IMessageStore $store)
     {
-        $this->__store = MySQLStore::getInstance();
+        $this->__store = $store;
         $this->__limit = self::DEFAULT_LIMIT;
     }
 
@@ -32,16 +29,17 @@ class Queue
      */
     public function add($key, $message)
     {
-        $this->__store->addMessage($key, $message);
+        $this->__store->add($key, $message);
     }
 
     /**
      * Возвращает кол-во сообщений в очереди по заданному ключу
      * @param $key
+     * @return mixed
      */
     public function count($key)
     {
-        $this->__store->getCountMessages($key);
+        return $this->__store->getCountMessages($key);
     }
 
     /**
@@ -58,8 +56,8 @@ class Queue
      * Удаляет сообщение из очереди
      * @param $id
      */
-    public function read($id)
+    public function read(int $id)
     {
-        $this->__store->deleteMessage($id);
+        $this->__store->remove($id);
     }
 } 
